@@ -23,7 +23,7 @@ const server = http.createServer((req, res) => {
   res.end()
 })
 
-const PORT = 4000
+const PORT = process.env.PORT || 4000
 
 server.listen(PORT, () => {
   console.log(`Computadora escuchando peticiones en el puerto ${PORT}`)
