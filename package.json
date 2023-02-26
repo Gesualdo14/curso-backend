@@ -1,0 +1,8 @@
+{
+  "name": "task-backend",
+  "version": "1.0.0",
+  "description": "Backend de nuestra aplicación de tareas",
+  "main": "app.js",
+  "author": "Martín Gesualdo",
+  "license": "MIT"
+}
