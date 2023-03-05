@@ -4,5 +4,17 @@
   "description": "Backend de nuestra aplicación de tareas",
   "main": "app.js",
   "author": "Martín Gesualdo",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon app.js",
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "mongoose": "^7.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
 }
