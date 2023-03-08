@@ -2,6 +2,7 @@ const express = require("express")
 const cors = require("cors")
 const { dbConnect, Task } = require("./database")
 const fileUpload = require("express-fileupload")
+const mime = require("mime")
 
 const { BlobServiceClient } = require("@azure/storage-blob")
 
@@ -26,7 +27,16 @@ app.use(
   })
 )
 
-app.get("/tasks", async (req, res) => {
+app.use(
+  "/",
+  express.static("public", {
+    setHeaders: (res, path) => {
+      res.setHeader("Content-Type", mime.getType(path))
+    },
+  })
+)
+
+app.get("/api/tasks", async (req, res) => {
   const tasks = await Task.find()
 
   res.status(200).json({
@@ -36,7 +46,7 @@ app.get("/tasks", async (req, res) => {
   })
 })
 
-app.post("/tasks", async (req, res) => {
+app.post("/api/tasks", async (req, res) => {
   console.log({ body: req.body })
 
   const createdTask = await Task.create({ name: req.body.taskName })
@@ -47,7 +57,8 @@ app.post("/tasks", async (req, res) => {
     data: createdTask._id,
   })
 })
-app.post("/tasks/:id/attach", async (req, res) => {
+
+app.post("/api/tasks/:id/attach", async (req, res) => {
   const { id } = req.params
   if (!req.files || Object.keys(req.files).length === 0) {
     return res.status(400).send("No se ha enviado ningún archivo")
@@ -65,7 +76,7 @@ app.post("/tasks/:id/attach", async (req, res) => {
   res.json({ ok: true, data: "Archivo subido correctamente" })
 })
 
-app.delete("/tasks/:id", async (req, res) => {
+app.delete("/api/tasks/:id", async (req, res) => {
   const { id } = req.params
 
   await Task.findByIdAndRemove(id)

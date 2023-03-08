@@ -1,0 +1,106 @@
+*,
+*::after,
+*::before {
+ box-sizing: border-box;
+}
+
+:root {
+    --blue: rgba(9, 109, 201, 1);
+    --red: rgb(201, 9, 9);
+}
+
+html {
+    font-size: 16px;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 30rem;
+    max-width: 80%;
+    box-shadow: 0 5px 15px 2px rgba(0, 0, 0, 0.2);
+    padding: 1rem;
+    border-radius: 0.2rem;
+}
+
+input {
+    padding: 0.75rem 1rem;
+    border: 1px lightgray solid;
+    border-radius: 0.5rem;
+    outline: none;
+    font-size: 1rem;
+}
+
+input::placeholder {
+    color: lightgray
+}
+
+button {
+    padding: 0.75rem;
+    background-color: var(--blue);
+    color: white;
+    border-radius:0.5rem;
+    margin-top: 1rem;
+    border: none;
+    font-size: 1rem;
+}
+
+button:hover {
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+#tasks {
+    width: 30rem;
+    max-width: 80%;
+    margin-top: 1rem;
+}
+
+.task-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.task {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0.5rem 1rem;
+    box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.2);
+    border-radius: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+#icons {
+    display: flex;
+    align-items: center;
+    margin-left: 1rem;
+}
+
+icon {
+    cursor: pointer;
+}
+
+.fa-edit, .fa-paperclip {
+    margin-right: 0.75rem;
+}
+
+.fa-edit:hover, .fa-paperclip:hover {
+    color: var(--blue)
+}
+
+.fa-trash:hover {
+    color: var(--red)
+}
