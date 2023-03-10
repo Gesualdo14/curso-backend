@@ -33,6 +33,7 @@ app.use(
     setHeaders: (res, path) => {
       res.setHeader("Content-Type", mime.getType(path))
     },
+    extensions: ["html"],
   })
 )
 
