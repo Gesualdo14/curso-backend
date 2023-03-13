@@ -1,9 +1,6 @@
-const submitButton = document.querySelector("button[type=submit]")
-const isDev = ["localhost", "127.0.0.1"].includes(window.location.hostname)
-const backendUrl = isDev
-  ? "http://localhost:4000/api"
-  : "https://curso-backend.onrender.com/api"
+import backendUrl from "./constants"
 
+const submitButton = document.querySelector("button[type=submit]")
 const tasksDIV = document.getElementById("tasks")
 
 // console.log({

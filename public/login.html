@@ -1,12 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/styles.css" />
+    <script type="module" src="login.js"></script>
+    <script type="module" src="constants.js"></script>
     <title>Login</title>
-</head>
-<body>
+  </head>
+  <body>
     <h1>LOGIN PAGE</h1>
-</body>
+    <ul>
+      <div class="container">
+        <input
+          id="email-input"
+          type="text"
+          name="email"
+          style="margin-bottom: 1rem"
+          placeholder="Introducir email"
+        />
+        <input
+          id="code-input"
+          type="text"
+          name="code"
+          placeholder="Código de acceso"
+        />
+        <button id="login-btn">Ingresar</button>
+        <button id="code-btn">Quiero un código</button>
+      </div>
+      <li>Implementar CSR y SSR, con JS y con React</li>
+      <li>Usar react como librería en este proyecto?</li>
+      <li>El frontend en otro server ya directamente con Next y React</li>
+    </ul>
+  </body>
 </html>
