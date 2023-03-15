@@ -13,12 +13,23 @@ loginBtn.classList.add("hidden")
 
 codeBtn.addEventListener("click", async () => {
   const email = emailInput.value
+  codeBtn.innerText = "Enviando..."
   console.log({ email })
   const res = await fetch(`${backendUrl}/auth/code/${email}`)
   const resJSON = await res.json()
+
   if (resJSON.ok) {
+    Swal.fire({
+      title: "Listo",
+      html: "Código enviado con éxito, revisa tu correo",
+      icon: "success",
+      confirmButtonText: "Entendido",
+    })
     codeBtn.classList.add("hidden")
+    codeBtn.innerText = "Quiero un código"
     loginBtn.classList.remove("hidden")
+  } else {
+    Swal.fire("UPS", "Hubo un error al solicitar el código", "warning")
   }
   console.log({ resJSON })
 })
@@ -26,15 +37,20 @@ codeBtn.addEventListener("click", async () => {
 loginBtn.addEventListener("click", async () => {
   const email = emailInput.value
   const code = codeInput.value
-  console.log({ email, code })
+  loginBtn.innerText = "Ingresando..."
+
   const res = await fetch(`${backendUrl}/auth/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" }, // necesario para que no sea BAD REQUEST
     body: JSON.stringify({ email, code }),
   })
-  const resJSON = await res.json()
-  if (resJSON.ok) {
-    localStorage.setItem("user", resJSON.data)
+  if (res.ok) {
+    const resJSON = await res.json()
+    localStorage.setItem("user", JSON.stringify(resJSON.data))
     window.location.href = "/"
+    loginBtn.innerText = "Ingresar"
+  } else {
+    Swal.fire("Código incorrecto", "Revisa el código ingresado", "info")
+    loginBtn.innerText = "Ingresar"
   }
 })

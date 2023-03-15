@@ -2,6 +2,9 @@ import backendUrl from "./constants"
 
 const submitButton = document.querySelector("button[type=submit]")
 const tasksDIV = document.getElementById("tasks")
+const uiContainer = document.getElementById("ui-container")
+
+uiContainer.classList.remove("hidden")
 
 // console.log({
 //   backendUrl,

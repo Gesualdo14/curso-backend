@@ -5,6 +5,6 @@ const router = require("express").Router()
 
 router.get("/code/:email", getCode)
 router.post("/login", passport.authenticate("local", { session: true }), login)
-router.post("/verify", passport.authenticate("jwt"), verifyUser)
+router.get("/verify", passport.authenticate("jwt"), verifyUser)
 
 module.exports = router
