@@ -50,21 +50,15 @@ function createAndAppendTask(task) {
   const trashIcon = document.createElement("icon")
   trashIcon.addEventListener("click", () => handleDeleteTask(task))
   const pencilIcon = document.createElement("icon")
-  const clipIcon = document.createElement("icon")
-  clipIcon.addEventListener("click", () => handleAttach(task))
   const iconsDIV = document.createElement("div")
   iconsDIV.setAttribute("id", "icons")
   p.innerText = task.name
   pencilIcon.classList.add("fas")
   pencilIcon.classList.add("fa-edit")
-  clipIcon.classList.add("fas")
-  clipIcon.classList.add("fa-paperclip")
   trashIcon.classList.add("fas")
   trashIcon.classList.add("fa-trash")
   taskDiv.appendChild(p)
-
   iconsDIV.appendChild(pencilIcon)
-  iconsDIV.appendChild(clipIcon)
   iconsDIV.appendChild(trashIcon)
   taskContainerDiv.appendChild(iconsDIV)
 
@@ -94,29 +88,6 @@ async function handleDeleteTask(task) {
       confirmButtonText: "Genial 🙃",
     })
   }
-}
-
-async function handleAttach(task) {
-  const inputFile = document.getElementById("task-file")
-  // Al abrirse el selector, también empezamos a escuchar el evento "change"
-  inputFile.click()
-  inputFile.addEventListener("change", async (e) => {
-    const file = e.target.files[0]
-    const formData = new FormData()
-    formData.append("file", file, file.name)
-
-    try {
-      const response = await fetch(`${backendUrl}/tasks/${task._id}/attach`, {
-        method: "POST",
-        body: formData,
-      })
-
-      const data = await response.json()
-      console.log(data)
-    } catch (error) {
-      console.error(error)
-    }
-  })
 }
 
 getTasks()
