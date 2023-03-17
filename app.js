@@ -51,8 +51,6 @@ app.use(
 app.get("/tasks", passport.authenticate("jwt"), async (req, res) => {
   const tasks = await Task.find()
 
-  console.log({ user: req.user.toObject().pictureUrl })
-
   const tasksHTML = tasks.map(
     (t) =>
       `<div class="task-container">
@@ -60,12 +58,8 @@ app.get("/tasks", passport.authenticate("jwt"), async (req, res) => {
             <p>${t.name}</p>
           </div>
           <div id="icons">
-            <icon class="fas fa-edit" aria-hidden="true">
-            </icon>
-            <icon class="fas fa-paperclip" aria-hidden="true">
-            </icon>
-            <icon class="fas fa-trash" aria-hidden="true">
-            </icon>
+            <icon class="fas fa-edit" aria-hidden="true" />
+            <icon class="fas fa-trash" aria-hidden="true" />
           </div>
         </div>`
   )

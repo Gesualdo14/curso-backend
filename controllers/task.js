@@ -10,9 +10,23 @@ const get = async (req, res) => {
 }
 
 const create = async (req, res) => {
-  console.log({ body: req.body })
+  const { taskName } = req.body
 
-  const createdTask = await Task.create({ name: req.body.taskName })
+  const alreadyExists = await Task.exists({ name: taskName })
+  console.log({ alreadyExists })
+  if (alreadyExists) {
+    return res.status(400).json({
+      ok: false,
+      swalConfig: {
+        title: "UPS",
+        html: "Ya existe un nombre con esa tarea",
+        confirmButtonText: "Entendido 😯",
+        icon: "info",
+      },
+    })
+  }
+
+  const createdTask = await Task.create({ name: taskName })
 
   res.status(201).json({
     ok: true,

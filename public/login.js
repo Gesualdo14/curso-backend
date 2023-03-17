@@ -9,8 +9,6 @@ const loginBtn = document.getElementById("login-btn")
 const emailInput = document.getElementById("email-input")
 const codeInput = document.getElementById("code-input")
 
-loginBtn.classList.add("hidden")
-
 codeBtn.addEventListener("click", async () => {
   const email = emailInput.value
   codeBtn.innerText = "Enviando..."
@@ -34,9 +32,17 @@ codeBtn.addEventListener("click", async () => {
   console.log({ resJSON })
 })
 
-loginBtn.addEventListener("click", async () => {
+loginBtn.addEventListener("click", loginHandler)
+
+async function loginHandler(e) {
+  e.preventDefault()
+  console.log({ e })
   const email = emailInput.value
   const code = codeInput.value
+  if (!email || !code) {
+    Swal.fire("UPS", "Debes rellenar ambos campos para ingresar", "info")
+    return
+  }
   loginBtn.innerText = "Ingresando..."
 
   const res = await fetch(`${backendUrl}/auth/login`, {
@@ -53,4 +59,4 @@ loginBtn.addEventListener("click", async () => {
     Swal.fire("Código incorrecto", "Revisa el código ingresado", "info")
     loginBtn.innerText = "Ingresar"
   }
-})
+}

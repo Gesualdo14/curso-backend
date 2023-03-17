@@ -19,9 +19,11 @@ const attach = async (req, res) => {
     blobHTTPHeaders: { blobContentType: file.mimetype },
   })
   const blobBaseUrl = "https://tuturno.blob.core.windows.net/tuturno"
-  await User.findByIdAndUpdate(id, { pictureUrl: `${blobBaseUrl}/${blobName}` })
+  await User.findByIdAndUpdate(id, {
+    pictureUrl: `${blobBaseUrl}/${blobName}?now=${req.body.now}`,
+  })
 
-  res.json({ ok: true, data: "Archivo subido correctamente" })
+  res.json({ ok: true })
 }
 
 module.exports = { attach }

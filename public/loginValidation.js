@@ -20,16 +20,25 @@ async function isUserLoggedIn() {
     imageInput.addEventListener("change", async (e) => {
       const file = e.target.files[0]
       const formData = new FormData()
+      const now = Date.now()
       formData.append("file", file, file.name)
+      formData.append("now", now)
 
       try {
         const response = await fetch(`${backendUrl}/users/${user._id}/attach`, {
           method: "POST",
           body: formData,
         })
-
-        const data = await response.json()
-        console.log(data)
+        const userImage = document.querySelector("img#user-image")
+        const userImageBigger = document.querySelector(".user-image.bigger")
+        userImage.setAttribute(
+          "src",
+          `${userImage.getAttribute("src")}?now=${now}`
+        )
+        userImageBigger.setAttribute(
+          "src",
+          `${userImageBigger.getAttribute("src")}?now=${now}`
+        )
       } catch (error) {
         console.error(error)
       }
@@ -38,6 +47,7 @@ async function isUserLoggedIn() {
     const header = document.querySelector(".header")
     const userImage = document.createElement("img")
     userImage.classList.add("user-image")
+    userImage.setAttribute("id", "user-image")
     userImage.src = user.pictureUrl
     userImage.addEventListener("click", (e) => {
       const userProfileDIV = document.getElementById("user-profile")

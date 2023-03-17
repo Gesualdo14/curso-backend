@@ -7,6 +7,7 @@
 :root {
     --blue: rgba(9, 109, 201, 1);
     --red: rgb(201, 9, 9);
+    --violet: rgb(89, 9, 201);
 }
 
 html {
@@ -31,6 +32,7 @@ body {
     justify-content: space-between;
     width: 100%;
     max-width: 30rem;
+    margin-bottom: 1rem;
 }
 
 .user-image {
@@ -39,6 +41,7 @@ body {
     border-radius: 2rem;
     padding: 0.3rem;
     cursor: pointer;
+    object-fit: cover;
 }
 
 .bigger {
@@ -106,6 +109,7 @@ body {
     max-width: 30rem;
     box-shadow: 0 5px 15px 2px rgba(0, 0, 0, 0.2);
     padding: 1rem;
+    margin: 0 auto;
     border-radius: 0.5rem;
 }
 
@@ -118,6 +122,23 @@ body {
     .header {
         width: 90%
     }
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.logo-container h1 {
+    margin: 0.5rem 0;
+}
+
+
+#logo {
+    width: 1.6rem;
+    height: 1.6rem;
+    margin-right: 0.7rem;
+    margin-top: 0.4rem;
 }
 
 input {
@@ -134,17 +155,24 @@ input::placeholder {
 
 button {
     padding: 0.75rem;
-    background-color: var(--blue);
     color: white;
     border-radius:0.5rem;
     margin-top: 1rem;
     border: none;
+    background-color: var(--blue);
     font-size: 1rem;
 }
-
 button:hover {
     cursor: pointer;
     opacity: 0.8;
+}
+
+#login-btn {
+    margin-top: 1rem;
+}
+#code-btn {
+    background-color: var(--violet);
+    margin-top: 0.5rem;
 }
 
 #tasks, #server-tasks {
@@ -157,6 +185,7 @@ button:hover {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin-bottom: 0.75rem;
 }
 
 .task {
@@ -167,7 +196,11 @@ button:hover {
     padding: 0.5rem 1rem;
     box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.2);
     border-radius: 0.5rem;
-    margin-bottom: 0.5rem;
+    
+}
+
+.p-task {
+    margin: 0.5rem 0;
 }
 
 #icons {
@@ -176,7 +209,7 @@ button:hover {
     margin-left: 1rem;
 }
 
-icon {
+i {
     cursor: pointer;
 }
 
@@ -185,7 +218,7 @@ icon {
 }
 
 .fa-edit:hover, .fa-paperclip:hover {
-    color: var(--blue)
+    color: var(--blue);
 }
 
 .fa-trash:hover {

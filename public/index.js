@@ -3,6 +3,7 @@ import backendUrl from "./constants"
 const submitButton = document.querySelector("button[type=submit]")
 const tasksDIV = document.getElementById("tasks")
 const uiContainer = document.getElementById("ui-container")
+const nameInput = document.querySelector("input[name=name]")
 
 uiContainer.classList.remove("hidden")
 
@@ -13,16 +14,41 @@ uiContainer.classList.remove("hidden")
 // })
 
 submitButton.addEventListener("click", async (e) => {
-  const nameInput = document.querySelector("input[name=name]")
+  e.preventDefault()
   const taskName = nameInput.value
 
-  const res = await fetch(`${backendUrl}/tasks`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ taskName }),
-  })
-  const jsonRes = await res.json()
-  createAndAppendTask({ _id: jsonRes.data, name: taskName })
+  if (!taskName) {
+    return Swal.fire("UPS", "Debes indicar la denominación de la tarea", "info")
+  }
+
+  if (taskName.length < 5) {
+    return Swal.fire(
+      "UPS",
+      "La denominación de la tarea debe tener al menos 5 caracteres",
+      "info"
+    )
+  }
+  try {
+    submitButton.innerText = "Creando..."
+    const res = await fetch(`${backendUrl}/tasks`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ taskName }),
+    })
+    submitButton.innerText = "Crear tarea"
+    const jsonRes = await res.json()
+    if (jsonRes.ok) {
+      createAndAppendTask({ _id: jsonRes.data, name: taskName })
+    } else {
+      Swal.fire(jsonRes.swalConfig)
+    }
+  } catch (error) {
+    Swal.fire(
+      "UPS",
+      "Hubo un error al crear la tarea, intente más tarde",
+      "error"
+    )
+  }
 })
 
 async function getTasks() {
@@ -42,14 +68,16 @@ function createAndAppendTask(task) {
   const taskContainerDiv = document.createElement("div")
   const taskDiv = document.createElement("div")
   taskContainerDiv.appendChild(taskDiv)
+  taskContainerDiv.setAttribute("id", task._id)
   taskContainerDiv.classList.add("task-container")
   taskDiv.classList.add("task")
   taskDiv.setAttribute("id", task._id)
   // taskDiv.addEventListener("click", handleTaskClick)
   const p = document.createElement("p")
-  const trashIcon = document.createElement("icon")
+  p.classList.add("p-task")
+  const trashIcon = document.createElement("i")
   trashIcon.addEventListener("click", () => handleDeleteTask(task))
-  const pencilIcon = document.createElement("icon")
+  const pencilIcon = document.createElement("i")
   const iconsDIV = document.createElement("div")
   iconsDIV.setAttribute("id", "icons")
   p.innerText = task.name
@@ -63,6 +91,7 @@ function createAndAppendTask(task) {
   taskContainerDiv.appendChild(iconsDIV)
 
   tasksDIV.appendChild(taskContainerDiv)
+  nameInput.value = ""
 }
 
 async function handleDeleteTask(task) {
@@ -87,6 +116,7 @@ async function handleDeleteTask(task) {
       icon: "success",
       confirmButtonText: "Genial 🙃",
     })
+    document.getElementById(task._id).remove()
   }
 }
 
