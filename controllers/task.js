@@ -34,6 +34,18 @@ const create = async (req, res) => {
     data: createdTask._id,
   })
 }
+const update = async (req, res) => {
+  const { id } = req.params
+  const { taskName } = req.body
+
+  const updatedTask = await Task.findByIdAndUpdate(id, { name: taskName })
+
+  res.status(200).json({
+    ok: true,
+    message: "Tarea editada con éxito ✅",
+    data: updatedTask._id,
+  })
+}
 
 const remove = async (req, res) => {
   const { id } = req.params
@@ -46,4 +58,4 @@ const remove = async (req, res) => {
   })
 }
 
-module.exports = { get, create, remove }
+module.exports = { get, create, update, remove }

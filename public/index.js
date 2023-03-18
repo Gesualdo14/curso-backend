@@ -7,6 +7,8 @@ const nameInput = document.querySelector("input[name=name]")
 
 uiContainer.classList.remove("hidden")
 
+let TASK_TO_EDIT = null
+
 // console.log({
 //   backendUrl,
 //   hostname: window.location.hostname,
@@ -29,20 +31,26 @@ submitButton.addEventListener("click", async (e) => {
     )
   }
   try {
-    submitButton.innerText = "Creando..."
-    const res = await fetch(`${backendUrl}/tasks`, {
-      method: "POST",
+    submitButton.innerText = TASK_TO_EDIT ? "Editando..." : "Creando..."
+    const path = TASK_TO_EDIT ? `tasks/${TASK_TO_EDIT._id}` : "tasks"
+    const res = await fetch(`${backendUrl}/${path}`, {
+      method: TASK_TO_EDIT ? "PUT" : "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ taskName }),
     })
     submitButton.innerText = "Crear tarea"
+    TASK_TO_EDIT = null
     const jsonRes = await res.json()
     if (jsonRes.ok) {
-      createAndAppendTask({ _id: jsonRes.data, name: taskName })
+      createAndAppendTask({
+        _id: jsonRes.data,
+        name: taskName,
+      })
     } else {
       Swal.fire(jsonRes.swalConfig)
     }
   } catch (error) {
+    console.log({ error })
     Swal.fire(
       "UPS",
       "Hubo un error al crear la tarea, intente más tarde",
@@ -65,32 +73,37 @@ function renderTasks(tasks) {
 }
 
 function createAndAppendTask(task) {
-  const taskContainerDiv = document.createElement("div")
-  const taskDiv = document.createElement("div")
-  taskContainerDiv.appendChild(taskDiv)
-  taskContainerDiv.setAttribute("id", task._id)
-  taskContainerDiv.classList.add("task-container")
-  taskDiv.classList.add("task")
-  taskDiv.setAttribute("id", task._id)
-  // taskDiv.addEventListener("click", handleTaskClick)
-  const p = document.createElement("p")
-  p.classList.add("p-task")
-  const trashIcon = document.createElement("i")
-  trashIcon.addEventListener("click", () => handleDeleteTask(task))
-  const pencilIcon = document.createElement("i")
-  const iconsDIV = document.createElement("div")
-  iconsDIV.setAttribute("id", "icons")
-  p.innerText = task.name
-  pencilIcon.classList.add("fas")
-  pencilIcon.classList.add("fa-edit")
-  trashIcon.classList.add("fas")
-  trashIcon.classList.add("fa-trash")
-  taskDiv.appendChild(p)
-  iconsDIV.appendChild(pencilIcon)
-  iconsDIV.appendChild(trashIcon)
-  taskContainerDiv.appendChild(iconsDIV)
+  const existingTask = document.querySelector(`div[id='${task._id}'] div p`)
+  if (!!existingTask) {
+    existingTask.innerText = task.name
+  } else {
+    const taskContainerDiv = document.createElement("div")
+    const taskDiv = document.createElement("div")
+    taskContainerDiv.appendChild(taskDiv)
+    taskContainerDiv.setAttribute("id", task._id)
+    taskContainerDiv.classList.add("task-container")
+    taskDiv.classList.add("task")
+    // taskDiv.addEventListener("click", handleTaskClick)
+    const p = document.createElement("p")
+    p.classList.add("p-task")
+    const trashIcon = document.createElement("i")
+    trashIcon.addEventListener("click", () => handleDeleteTask(task))
+    const pencilIcon = document.createElement("i")
+    pencilIcon.addEventListener("click", () => handleEditTask(task))
+    const iconsDIV = document.createElement("div")
+    iconsDIV.setAttribute("id", "icons")
+    p.innerText = task.name
+    pencilIcon.classList.add("fas")
+    pencilIcon.classList.add("fa-edit")
+    trashIcon.classList.add("fas")
+    trashIcon.classList.add("fa-trash")
+    taskDiv.appendChild(p)
+    iconsDIV.appendChild(pencilIcon)
+    iconsDIV.appendChild(trashIcon)
+    taskContainerDiv.appendChild(iconsDIV)
 
-  tasksDIV.appendChild(taskContainerDiv)
+    tasksDIV.appendChild(taskContainerDiv)
+  }
   nameInput.value = ""
 }
 
@@ -118,6 +131,14 @@ async function handleDeleteTask(task) {
     })
     document.getElementById(task._id).remove()
   }
+}
+
+async function handleEditTask(task) {
+  const taskParagraph = document.querySelector(`div[id='${task._id}'] div p`)
+  submitButton.innerText = "Editar tarea"
+  // nameInput.value = task.name
+  nameInput.value = taskParagraph.innerText
+  TASK_TO_EDIT = task
 }
 
 getTasks()
