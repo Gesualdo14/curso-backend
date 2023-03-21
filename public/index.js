@@ -83,13 +83,22 @@ function createAndAppendTask(task) {
     taskContainerDiv.setAttribute("id", task._id)
     taskContainerDiv.classList.add("task-container")
     taskDiv.classList.add("task")
-    // taskDiv.addEventListener("click", handleTaskClick)
     const p = document.createElement("p")
     p.classList.add("p-task")
     const trashIcon = document.createElement("i")
     trashIcon.addEventListener("click", () => handleDeleteTask(task))
     const pencilIcon = document.createElement("i")
     pencilIcon.addEventListener("click", () => handleEditTask(task))
+    const inputCheck = document.createElement("input")
+    inputCheck.setAttribute("type", "checkbox")
+    inputCheck.addEventListener("click", () => handleDoneTask(task, taskDiv))
+    inputCheck.addEventListener("change", () => console.log("change"))
+    inputCheck.setAttribute("id", task._id)
+    if (task.completed) {
+      inputCheck.checked = task.completed
+      taskDiv.classList.add("completed")
+    }
+    // inputCheck.checked = task.completed
     const iconsDIV = document.createElement("div")
     iconsDIV.setAttribute("id", "icons")
     p.innerText = task.name
@@ -98,6 +107,7 @@ function createAndAppendTask(task) {
     trashIcon.classList.add("fas")
     trashIcon.classList.add("fa-trash")
     taskDiv.appendChild(p)
+    iconsDIV.appendChild(inputCheck)
     iconsDIV.appendChild(pencilIcon)
     iconsDIV.appendChild(trashIcon)
     taskContainerDiv.appendChild(iconsDIV)
@@ -130,6 +140,25 @@ async function handleDeleteTask(task) {
       confirmButtonText: "Genial 🙃",
     })
     document.getElementById(task._id).remove()
+  }
+}
+
+async function handleDoneTask(task, taskDiv) {
+  const existingCheck = document.querySelector(`input[id='${task._id}']`)
+  taskDiv.classList.toggle("completed")
+  console.log({ existingCheck })
+  const res = await fetch(`${backendUrl}/tasks/${task._id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ completed: existingCheck.checked }),
+  })
+  if (!res.ok) {
+    taskDiv.classList.toggle("completed")
+    Swal.fire(
+      "UPS",
+      "Hubo un problema al cambiar el estado de la tarea",
+      "warning"
+    )
   }
 }
 

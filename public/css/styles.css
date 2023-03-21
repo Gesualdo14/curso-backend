@@ -5,6 +5,7 @@
 }
 
 :root {
+    --blueSoft: rgba(9, 108, 201, 0.12);
     --blue: rgba(9, 109, 201, 1);
     --red: rgb(201, 9, 9);
     --violet: rgb(89, 9, 201);
@@ -45,13 +46,15 @@ body {
 }
 
 .bigger {
-    width: 10rem;
-    height: 10rem;
-    border-radius: 10rem;   
+    width: 15rem;
+    height: 15rem;
+    border-radius: 15rem;   
+    box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.1);
 }
 
 .logout {
-    margin-top: 1rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
     user-select: none;
 }
 
@@ -89,7 +92,7 @@ body {
     padding: 1rem;
     background-color: white;
     border-radius: 0.5rem;
-    max-width: 15rem;
+    max-width: 20rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -153,6 +156,10 @@ input::placeholder {
     color: lightgray
 }
 
+input[type="checkbox"] {
+    margin: 0.15rem 1rem 0 0;
+}
+
 button {
     padding: 0.75rem;
     color: white;
@@ -194,9 +201,12 @@ button:hover {
     justify-content: space-between;
     width: 100%;
     padding: 0.5rem 1rem;
-    box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.2);
-    border-radius: 0.5rem;
-    
+    box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.2);
+    border-radius: 0.5rem;   
+}
+
+.completed {
+    background-color: var(--blueSoft);
 }
 
 .p-task {

@@ -48,7 +48,7 @@ async function isUserLoggedIn() {
     const userImage = document.createElement("img")
     userImage.classList.add("user-image")
     userImage.setAttribute("id", "user-image")
-    userImage.src = user.pictureUrl
+    userImage.src = user.pictureUrl || "./images/no-user.png"
     userImage.addEventListener("click", (e) => {
       const userProfileDIV = document.getElementById("user-profile")
       const userProfileBackDIV = document.getElementById(
@@ -67,7 +67,7 @@ async function isUserLoggedIn() {
         userImageBigger = document.createElement("img")
         userImageBigger.classList.add("user-image")
         userImageBigger.classList.add("bigger")
-        userImageBigger.src = user.pictureUrl
+        userImageBigger.src = user.pictureUrl || "./images/no-user.png"
         userImageBigger.addEventListener("click", () => {
           imageInput.click()
           const clipIcon = document.createElement("icon")

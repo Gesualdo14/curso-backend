@@ -1,7 +1,8 @@
 const Task = require("../models/task")
 
 const get = async (req, res) => {
-  const tasks = await Task.find()
+  console.log({ user: req.user })
+  const tasks = await Task.find({ createdBy: req.user._id })
 
   res.status(200).json({
     ok: true,
@@ -12,8 +13,10 @@ const get = async (req, res) => {
 const create = async (req, res) => {
   const { taskName } = req.body
 
-  const alreadyExists = await Task.exists({ name: taskName })
-  console.log({ alreadyExists })
+  const alreadyExists = await Task.exists({
+    name: taskName,
+  })
+
   if (alreadyExists) {
     return res.status(400).json({
       ok: false,
@@ -26,7 +29,10 @@ const create = async (req, res) => {
     })
   }
 
-  const createdTask = await Task.create({ name: taskName })
+  const createdTask = await Task.create({
+    name: taskName,
+    createdBy: req.user._id,
+  })
 
   res.status(201).json({
     ok: true,
@@ -36,9 +42,12 @@ const create = async (req, res) => {
 }
 const update = async (req, res) => {
   const { id } = req.params
-  const { taskName } = req.body
-
-  const updatedTask = await Task.findByIdAndUpdate(id, { name: taskName })
+  const { taskName, completed } = req.body
+  console.log({ completed, taskName })
+  const updatedTask = await Task.findByIdAndUpdate(id, {
+    name: taskName,
+    completed,
+  })
 
   res.status(200).json({
     ok: true,
