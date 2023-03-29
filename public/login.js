@@ -9,7 +9,8 @@ const loginBtn = document.getElementById("login-btn")
 const emailInput = document.getElementById("email-input")
 const codeInput = document.getElementById("code-input")
 
-codeBtn.addEventListener("click", async () => {
+codeBtn.addEventListener("click", async (e) => {
+  e.preventDefault()
   const email = emailInput.value
   codeBtn.innerText = "Enviando..."
   console.log({ email })
