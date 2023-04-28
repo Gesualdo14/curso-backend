@@ -1,8 +1,8 @@
 require("dotenv").config()
 const express = require("express")
+const path = require("path")
 const cors = require("cors")
 const dbConnect = require("./connections/db")
-const mime = require("mime")
 const { areWeInProduction } = require("./utils/config")
 const passport = require("passport")
 const Task = require("./models/task")
@@ -17,7 +17,7 @@ app.use(cors())
 // Parseamos el body de aquellas requests con Content-Type "application/json"
 app.use(express.json())
 
-// Configuramso el objeto global "passport" con las diferentes estrategias
+// Configuramos el objeto global "passport" con las diferentes estrategias
 require("./middlewares/passport")
 
 // Configuramos express-session para el control de la cookie
@@ -38,12 +38,8 @@ app.use(passport.initialize())
 
 // Configuración para servir nuestros archivos ESTATICOS, nuestra UI
 app.use(
-  "/",
-  express.static("public", {
-    setHeaders: (res, path) => {
-      res.setHeader("Content-Type", mime.getType(path))
-    },
-    extensions: ["html", "js"],
+  express.static(path.join(__dirname, "public"), {
+    extensions: ["html", "css", "js"],
   })
 )
 
@@ -66,7 +62,7 @@ app.get("/tasks", passport.authenticate("jwt"), async (req, res) => {
 
   const tasksPageHTML = `
   <!DOCTYPE html>
-<html lang="en">
+  <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
